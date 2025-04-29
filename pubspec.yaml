@@ -1,0 +1,37 @@
+name: weather_app
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.3.0
+  flutter_bloc: ^9.1.0
+  equatable: ^2.0.7
+  intl: ^0.20.2
+  syncfusion_flutter_charts: ^29.1.40
+  lottie: ^3.3.1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/anims/
+
+  fonts:
+    - family: flutterfonts
+      fonts:
+        - asset: assets/fonts/flutterfonts.ttf
