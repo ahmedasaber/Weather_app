@@ -35,3 +35,9 @@ flutter:
     - family: flutterfonts
       fonts:
         - asset: assets/fonts/flutterfonts.ttf
+
+    - family: Sora
+      fonts:
+        - asset:  assets/fonts/Sora-Regular.ttf
+        - asset:  assets/fonts/Sora-Bold.ttf
+          weight: 700
