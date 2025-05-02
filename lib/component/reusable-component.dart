@@ -31,3 +31,18 @@ Widget dailyWeatherStats({required String stateName,required String imagePath, i
     ],
   );
 }
+
+Widget customAlign({required double dirX, required double dirY, required double contHeight, required double contWidth,
+       BoxShape? boxShape, required Color color}){
+  return Align(
+    alignment: AlignmentDirectional(dirX, dirY),
+    child: Container(
+      height: contHeight,
+      width: contWidth,
+      decoration: BoxDecoration(
+          shape: boxShape ?? BoxShape.rectangle,
+          color: color
+      ),
+    ),
+  );
+}
