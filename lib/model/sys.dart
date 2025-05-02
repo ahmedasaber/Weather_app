@@ -6,10 +6,10 @@ class Sys{
 
   factory Sys.fromJson(Map<String, dynamic> jsonData){
     return Sys(
-      type: int.parse(jsonData['type']),
-      id: int.parse(jsonData['id']),
-      sunrise: int.parse(jsonData['sunrise']),
-      sunset: int.parse(jsonData['sunset']),
+      type: jsonData['type'],
+      id: jsonData['id'],
+      sunrise: jsonData['sunrise'],
+      sunset: jsonData['sunset'],
       country: jsonData['country']
     );
   }

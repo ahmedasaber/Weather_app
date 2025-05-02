@@ -2,8 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/component/reusable-component.dart';
+import 'package:weather_app/model/current_weather.dart';
+import 'package:weather_app/viewmodel/weather_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -65,78 +68,91 @@ class HomeScreen extends StatelessWidget {
                   decoration: const BoxDecoration(color: Colors.transparent),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '📍 state.weather.areaName',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300
+              BlocBuilder<WeatherBloc, WeatherState>(
+                builder: (context, state) {
+                  if (state is WeatherLoaded){
+                    CurrentWeatherData weather = state.currentWeatherData;
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '📍 ${weather.name}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300
+                            ),
+                          ),
+                          SizedBox(height: 8,),
+                          Text(
+                            'Good Morning',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Image.asset('assets/images/1.png'),
+                          Center(
+                            child: Text(
+                              '${((weather.mainWeather?.temp ?? 0) - 273.15).round()}°C',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 55,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              weather.weather![0].description.toString().toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Center(
+                            child: Text(
+                              DateFormat('EEEE dd ∙ h:mm a').format(DateTime.fromMillisecondsSinceEpoch(weather.dt! * 1000, isUtc: false)),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              dailyWeatherStats(stateName: 'Sunrise', imagePath: 'assets/images/11.png', date: weather.sys?.sunrise),
+                              dailyWeatherStats(stateName: 'Sunset', imagePath: 'assets/images/12.png', date: weather.sys?.sunset),
+                            ],
+                          ),
+                          Divider(thickness: 0.1,color: Colors.grey),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              dailyWeatherStats(stateName: 'Temp Max', imagePath: 'assets/images/13.png', temp: weather.mainWeather?.temp_max),
+                              dailyWeatherStats(stateName: 'Temp Min', imagePath: 'assets/images/14.png', temp: weather.mainWeather?.temp_min),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 8,),
-                    Text(
-                      'Good Morning',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    Image.asset('assets/images/1.png'),
-                    Center(
-                      child: Text(
-                        '21°C',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 55,
-                            fontWeight: FontWeight.w600
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        'THUNDERSTORM'.toUpperCase(),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Center(
-                      child: Text(
-                        DateFormat('EEEE dd • h:mm a').format(DateTime.fromMillisecondsSinceEpoch(1746124360 * 1000, isUtc: false)),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        dailyWeatherStats(stateName: 'Sunrise', imagePath: 'assets/images/11.png', date: 1746069121),
-                        dailyWeatherStats(stateName: 'Sunset', imagePath: 'assets/images/12.png', date: 1746117119),
-                      ],
-                    ),
-                    Divider(thickness: 0.1,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        dailyWeatherStats(stateName: 'Temp Max', imagePath: 'assets/images/13.png', temp: 297.57),
-                        dailyWeatherStats(stateName: 'Temp Min', imagePath: 'assets/images/14.png', temp: 293.94),
-                      ],
-                    ),
-                  ],
-                ),
+                    );
+                  }else if(state is WeatherLoading)
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.white,)
+                    );
+                  else {
+                    return Dialog(child: Text('data'),);
+                  }
+                },
               ),
             ],
           ),

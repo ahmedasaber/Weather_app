@@ -4,7 +4,7 @@ class Clouds{
   Clouds({required this.all});
 
   factory Clouds.fromJson(Map<String, dynamic> jsonData){
-    return Clouds(all: int.parse(jsonData['all']));
+    return Clouds(all: jsonData['all']);
   }
   Map<String, dynamic> toJson(){
     return {

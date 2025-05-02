@@ -6,8 +6,8 @@ class Coord{
 
   factory Coord.fomJson(Map<String, dynamic> jsonData){
     return Coord(
-      lon: double.parse(jsonData['lon']),
-      lat: double.parse(jsonData['lat']),
+      lon: jsonData['lon'],
+      lat: jsonData['lat'],
     );
   }
 

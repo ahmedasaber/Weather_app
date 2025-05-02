@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:weather_app/model/clouds.dart';
 import 'package:weather_app/model/coord.dart';
 import 'package:weather_app/model/main_weather.dart';
@@ -40,14 +38,14 @@ class CurrentWeatherData {
       weather: List.of(jsonData['weather']).map((i)=>Weather.fromJson(i)).toList(),
       base: jsonData['base'],
       mainWeather: MainWeather.formJson(jsonData['main']),
-      visibility: int.parse(jsonData['visibility']),
+      visibility: jsonData['visibility'],
       clouds: Clouds.fromJson(jsonData['clouds']),
-      dt: int.parse(jsonData['dt']),
+      dt: jsonData['dt'],
       sys: Sys.fromJson(jsonData['sys']),
-      timeZone: int.parse(jsonData['timeZone']),
-      id: int.parse(jsonData['id']),
+      timeZone: jsonData['timezone'],
+      id: jsonData['id'],
       name: jsonData['name'],
-      cod: int.parse(jsonData['cod'])
+      cod: jsonData['cod']
     );
   }
 

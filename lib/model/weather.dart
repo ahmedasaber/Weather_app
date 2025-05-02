@@ -8,7 +8,7 @@ class Weather{
 
   factory Weather.fromJson(Map<String, dynamic> jsonData){
     return Weather(
-      id: int.parse(jsonData['id']),
+      id: jsonData['id'],
       main: jsonData['main'],
       description: jsonData['description'],
       icon: jsonData['icon']
