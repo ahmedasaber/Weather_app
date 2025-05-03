@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,12 +12,17 @@ part 'weather_state.dart';
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherLoading()) {
     on<FetchWeather>((event, emit) async{
+      emit(WeatherLoading());
       try {
         Position position = await _determinePosition();
         WeatherRepo weatherRepo = WeatherRepo(lat: position.latitude, lon: position.longitude);
         CurrentWeatherData currentWeatherData = await weatherRepo.fetchCurrentData();
         emit(WeatherLoaded(currentWeatherData));
+      } on SocketException {
+        emit(WeatherError("Network Error"));
       } catch (e) {
+        print(e.runtimeType);
+        print(e is SocketException);
         emit(WeatherError(e.toString()));
       }
     });

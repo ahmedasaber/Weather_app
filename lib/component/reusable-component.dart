@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -44,5 +45,18 @@ Widget customAlign({required double dirX, required double dirY, required double 
           color: color
       ),
     ),
+  );
+}
+
+Widget blurAlertDialog({String? title, String? content, Text? textButton, required VoidCallback onPress}){
+  return CupertinoAlertDialog(
+    title: title != null ? Text(title) : null,
+    content: content != null ? Text(content) : null,
+    actions: [
+      CupertinoDialogAction(
+        child: textButton ?? Text('Ok'),
+        onPressed: onPress,
+      ),
+    ],
   );
 }
