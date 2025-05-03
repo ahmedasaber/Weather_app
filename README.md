@@ -1,16 +1,15 @@
-# weatherapp
+# Weather-app
 
-A weather app Flutter project.
+A new Weather-app project.
 
-## Getting Started
+## 🚀 Feature
 
-This project is a starting point for a Flutter application.
+- Get the Current Weather for your location
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Technologies Used
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- BLoC State Management
+- MVVM Architecture
+- HTTP for API requests
+- Reusable-Component
+- Custom Font
