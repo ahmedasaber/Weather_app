@@ -60,3 +60,12 @@ Widget blurAlertDialog({String? title, String? content, Text? textButton, requir
     ],
   );
 }
+
+Widget customText({required String text, TextAlign? textAlign, TextStyle? textStyle}){
+  return Text(
+    text,
+    textAlign: textAlign,
+    style: textStyle ?? TextStyle(fontSize: 12, color: Colors.white),
+    overflow: TextOverflow.ellipsis,
+);
+}

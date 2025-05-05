@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/component/reusable-component.dart';
 import 'package:weather_app/model/current_weather.dart';
-import 'package:weather_app/viewmodel/weather_bloc.dart';
+import 'package:weather_app/viewmodel/current_weather/weather_bloc.dart';
+import 'package:weather_app/viewmodel/five_days_weather/fivedays_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        forceMaterialTransparency: true,
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,
           statusBarColor: Colors.transparent
@@ -68,7 +69,9 @@ class HomeScreen extends StatelessWidget {
                       return RefreshIndicator(
                         onRefresh:()async{
                           context.read<WeatherBloc>().add(FetchWeather()); // Update with your actual event
+                          context.read<FiveDaysBloc>().add(FetchFiveDays()); // Update with your actual event
                         },
+                        elevation:0,
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
                           child: SizedBox(
@@ -86,14 +89,14 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 8,),
                                 switch (weather.weather?[0].id) {
-                                  int id when id >= 200 && id < 300 => Image.asset('assets/images/1.png'),
-                                  int id when id >= 300 && id < 500 => Image.asset('assets/images/2.png'),
-                                  int id when id >= 500 && id < 600 => Image.asset('assets/images/3.png'),
-                                  int id when id >= 600 && id < 700 => Image.asset('assets/images/4.png'),
-                                  int id when id >= 700 && id < 800 => Image.asset('assets/images/5.png'),
-                                  int id when id == 800 => Image.asset('assets/images/6.png'),
-                                  int id when id >= 800 && id < 804 => Image.asset('assets/images/7.png'),
-                                  _ => Image.asset('assets/images/7.png'), // fallback for other values
+                                  int id when id >= 200 && id < 300 => Center(child: Image.asset('assets/images/1.png')),
+                                  int id when id >= 300 && id < 500 => Center(child: Image.asset('assets/images/2.png')),
+                                  int id when id >= 500 && id < 600 => Center(child: Image.asset('assets/images/3.png')),
+                                  int id when id >= 600 && id < 700 => Center(child: Image.asset('assets/images/4.png')),
+                                  int id when id >= 700 && id < 800 => Center(child: Image.asset('assets/images/5.png')),
+                                  int id when id == 800 => Center(child: Center(child: Image.asset('assets/images/6.png'))),
+                                  int id when id >= 800 && id < 804 => Center(child: Image.asset('assets/images/7.png')),
+                                  _ => Center(child: Image.asset('assets/images/7.png')), // fallback for other values
                                 },
                                 Center(
                                   child: Text(
@@ -141,6 +144,76 @@ class HomeScreen extends StatelessWidget {
                                     dailyWeatherStats(stateName: 'Temp Max', imagePath: 'assets/images/13.png', temp: weather.mainWeather?.temp_max),
                                     dailyWeatherStats(stateName: 'Temp Min', imagePath: 'assets/images/14.png', temp: weather.mainWeather?.temp_min),
                                   ],
+                                ),
+                                const SizedBox(height: 50),
+                                const Text('5-Days Forecast', style: TextStyle(color: Colors.white),),
+                                const SizedBox(height: 20),
+                                BlocBuilder<FiveDaysBloc, FiveDaysState>(
+                                  builder: (context, state){
+                                    switch(state){
+                                      case FiveDaysLoaded():
+                                        return Container(
+                                          padding: EdgeInsets.all(16),
+                                          decoration:BoxDecoration(
+                                            color: Colors.white.withValues(alpha: 0.1),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child:  Column(
+                                            children: state.dailyForecast.map((e) =>
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    flex:3,
+                                                    child: customText(
+                                                      text: '${DateFormat.E().format(DateTime.parse(e.date))}'
+                                                    )
+                                                  ),
+                                                  Expanded(
+                                                    flex:5,
+                                                    child: Row(
+                                                      children: [
+                                                        switch (e.id) {
+                                                          int id when id >= 200 && id < 300 => Image.asset('assets/images/1.png', scale: 20,),
+                                                          int id when id >= 300 && id < 500 => Image.asset('assets/images/2.png', scale: 20,),
+                                                          int id when id >= 500 && id < 600 => Image.asset('assets/images/3.png', scale: 20,),
+                                                          int id when id >= 600 && id < 700 => Image.asset('assets/images/4.png', scale: 20,),
+                                                          int id when id >= 700 && id < 800 => Image.asset('assets/images/5.png', scale: 20,),
+                                                          int id when id == 800 => Image.asset('assets/images/6.png', scale: 20,),
+                                                          int id when id >= 800 && id < 804 => Image.asset('assets/images/7.png', scale: 20,),
+                                                          _ => Image.asset('assets/images/7.png', scale: 20,), // fallback for other values
+                                                        },
+                                                        const SizedBox(width: 5,),
+                                                        Expanded(
+                                                          child: customText(
+                                                            text: '${e.weather}',
+                                                            textAlign: TextAlign.left
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ),
+                                                  Expanded(
+                                                    flex:3,
+                                                    child: customText(
+                                                      text: '${(e.maxTemp - 273.15).round()}° / ${(e.minTemp - 273.15).round()}°',
+                                                      textAlign: TextAlign.end
+                                                    )
+                                                  ),
+                                                  const SizedBox(height: 50),
+                                                ],
+                                              ),
+                                            ).toList(),
+                                          ),
+                                        );
+                                      case FiveDaysError():
+                                        return Center(
+                                          child: Text(state.errorMessage),
+                                        );
+                                      case FiveDaysInitial():
+                                        return SizedBox.shrink();
+                                    }
+                                  }
                                 ),
                               ],
                             ),

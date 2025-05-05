@@ -7,10 +7,10 @@ class MainWeather{
 
   factory MainWeather.formJson(Map<String, dynamic> jsonData){
     return MainWeather(
-      temp: jsonData['temp'],
-      feels_like: jsonData['feels_like'],
-      temp_min: jsonData['temp_min'],
-      temp_max: jsonData['temp_max'],
+      temp: jsonData['temp'].toDouble(),
+      feels_like: jsonData['feels_like'].toDouble(),
+      temp_min: jsonData['temp_min'].toDouble(),
+      temp_max: jsonData['temp_max'].toDouble(),
       pressure: jsonData['pressure'],
       humidity: jsonData['humidity'],
       sea_level: jsonData['sea_level'],
