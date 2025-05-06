@@ -70,4 +70,24 @@ class WeatherRepo{
 
     return await Geolocator.getCurrentPosition();
   }
+
+  Future<CurrentWeatherData> fetchCurrentDataWithCity(String city) async{
+    var response = await http.get(Uri.parse("$baseUrl/weather?q=$city&appid=$apiKey"));
+    if(response.statusCode == 200){
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return CurrentWeatherData.fromJson(jsonData);
+    }else{
+      throw ('${response.reasonPhrase}');
+    }
+  }
+
+  Future<List<FiveDayData>> fetchFiveDaysDataWithCity(String city) async{
+    var response = await http.get(Uri.parse("$baseUrl/forecast?q=$city&appid=$apiKey"));
+    if(response.statusCode == 200){
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      return List.of(jsonData['list']).map((i)=>FiveDayData.fromJson(i)).toList();
+    }else{
+      throw ('${response.reasonPhrase}');
+    }
+  }
 }

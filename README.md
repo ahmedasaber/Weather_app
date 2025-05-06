@@ -20,9 +20,13 @@ A new Weather-app project.
   <tr>
     <th>Home</th>
     <th>5-days Forecast</th>
+    <th>Searched</th>
+    <th>5-days Forecast</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/WhatsApp%20Image%202025-05-03%20at%2005.00.31_feab1fcb.jpg" width="250"/></td>
-    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/Screenshot_2025-05-05-02-53-55-47_9ddbea12711bafff796e042aec31d432.jpg" width="250"/></td>
+    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/home1.jpg" width="250"/></td>
+    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/home2.jpg" width="250"/></td>
+    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/city1.jpg" width="250"/></td>
+    <td><img src="https://github.com/ahmedasaber/Weather_app/blob/master/assets/city2.jpg" width="250"/></td>
   </tr>
 </table>

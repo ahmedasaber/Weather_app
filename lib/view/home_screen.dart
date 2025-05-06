@@ -80,12 +80,23 @@ class HomeScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '📍 ${weather.name}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w300
-                                  ),
+                                Row(
+                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '📍 ${weather.name}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w300
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: (){
+                                          Navigator.pushNamed(context, '/search');
+                                        },
+                                        icon: Icon(CupertinoIcons.search, color: Colors.white,)
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(height: 8,),
                                 switch (weather.weather?[0].id) {

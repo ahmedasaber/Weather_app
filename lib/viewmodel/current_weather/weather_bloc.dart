@@ -18,8 +18,18 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       } on SocketException {
         emit(WeatherError("Network Error"));
       } catch (e) {
-        print(e.runtimeType);
-        print(e is SocketException);
+        emit(WeatherError(e.toString()));
+      }
+    });
+
+    on<FetchWeatherWithCity>((event, emit) async{
+      emit(WeatherLoading());
+      try {
+        CurrentWeatherData currentWeatherData = await WeatherRepo().fetchCurrentDataWithCity(event.city);
+        emit(WeatherLoaded(currentWeatherData));
+      } on SocketException {
+        emit(WeatherError("Network Error"));
+      } catch (e) {
         emit(WeatherError(e.toString()));
       }
     });

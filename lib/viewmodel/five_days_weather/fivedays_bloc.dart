@@ -16,13 +16,22 @@ class FiveDaysBloc extends Bloc<FiveDaysEvent, FiveDaysState> {
       try {
         List<FiveDayData> fiveDaysList = await WeatherRepo().fetchFiveDaysData();
         List<DailyForecast> dailyForecast = groupByDay(fiveDaysList);
-        dailyForecast.forEach((e)=>print(e.date));
         emit(FiveDaysLoaded(dailyForecast));
       } on SocketException {
         emit(FiveDaysError("Network Error"));
       } catch (e) {
-        print(e.runtimeType);
-        print(e is SocketException);
+        emit(FiveDaysError(e.toString()));
+      }
+    });
+
+    on<FetchFiveDaysWithCity>((event, emit) async {
+      try {
+        List<FiveDayData> fiveDaysList = await WeatherRepo().fetchFiveDaysDataWithCity(event.city);
+        List<DailyForecast> dailyForecast = groupByDay(fiveDaysList);
+        emit(FiveDaysLoaded(dailyForecast));
+      } on SocketException {
+        emit(FiveDaysError("Network Error"));
+      } catch (e) {
         emit(FiveDaysError(e.toString()));
       }
     });
