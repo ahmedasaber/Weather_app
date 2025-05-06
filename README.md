@@ -6,6 +6,7 @@ A new Weather-app project.
 
 - Get the Current Weather for your location
 - Get the 5-days Forecast for your location
+- Search for a city
 
 ## 🛠️ Technologies Used
 
